@@ -1,0 +1,37 @@
+# Alternative profile -- runtime configuration switching without a rebuild.
+# Flat/nested YAML subset.
+ports:
+  count: 4
+  rates: [100G, 100G, 100G, 100G]
+  mtu_bytes: 9216
+buffer:
+  cell_bytes: 256
+  pool_bytes: 1048576
+qos:
+  q_limit: 32
+  ecn_min: 4
+  ecn_max: 16
+  trim_th: 24
+  drop_th: 28
+trim:
+  enabled: false
+  min_trim_size_bytes: 32
+  dscp_trimmable: 10
+  dscp_trimmed: 12
+ecn:
+  enabled: false
+features:
+  l2: true
+  l3_ipv4: true
+  l3_ipv6: true
+  csig: off
+  ufh: false
+  cbfc: true
+  pfc: true
+cbfc:
+  num_vc: 32
+  window: 32
+pfc:
+  xoff: 8
+  xon: 4
+  quanta: 100

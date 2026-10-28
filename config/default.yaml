@@ -1,0 +1,63 @@
+# UEC switch profile -- 8 ports, 3 traffic classes, 8 MB shared buffer.
+version: 1
+
+ports:
+  count: 8                 # runtime-configurable: 2/4/8/16
+  rates: [200G, 200G, 200G, 200G, 100G, 100G, 100G, 100G]
+  mtu_bytes: 9216
+  min_frame_bytes: 64
+
+tc:
+  count: 3
+  names: [low, med, high]
+  dscp_to_tc:
+    control: high
+    trimmed: med
+    trimmable: low
+    default: low
+
+scheduler:
+  high: strict_priority
+  med_low: wrr
+  med_weight: 3
+  low_weight: 1
+
+buffer:
+  cell_bytes: 256
+  pool_bytes: 8388608
+  per_port_headroom_bytes: 65536
+  thresholds_frac:
+    ecn_min: 0.25
+    ecn_max: 0.50
+    trim: 0.75
+    drop: 0.90
+
+ecn:
+  enabled: true
+  mark_on_dequeue: true
+
+trim:
+  enabled: true
+  min_trim_size_bytes: 24
+  update_ip_len_checksum: true
+  update_fcs: true
+  dscp_trimmed: TRIMMED
+  dscp_trimmed_last_hop: TRIMMED_LASTHOP
+
+features:
+  l2: true
+  l3_ipv4: true
+  l3_ipv6: true
+  vlan: true
+  ecmp: true
+  multicast: true
+  ufh: true
+  csig: compact
+  cbfc: false
+  pfc: false
+  inc_sep: false
+
+console:
+  enable: true
+  pcap: true
+  model_trace: false
